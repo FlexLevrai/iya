@@ -1,0 +1,61 @@
+<div class="container marg">
+  <div class="half-post-entry d-block d-lg-flex bg-light">
+    <div class="img-bg" style="background-image: url('assets/images/destination-5.jpg')"></div>
+    <div class="contents">
+      <h2>IYA-Connexion</h2>
+      <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Numéro avec l'indicatif</label>
+          <input type="email"
+                placeholder="00228xxxxxxx ou +228xxxxxxx"
+                 id="email"
+                 [ngClass]="{'form-control': true,
+                 'is-invalid': signinForm.controls['email'].errors && !signinForm.controls['email'].pristine,
+                 'is-valid': !signinForm.controls['email'].errors && !signinForm.controls['email'].pristine}"
+                 formControlName="email" required>
+            <div *ngIf="signinForm.controls['email'].errors && !signinForm.controls['email'].pristine"
+                 class="text-danger small_font">
+                 <p [hidden]="!signinForm.controls['email'].errors.required">Champ requis est requis.</p>
+               </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <div class="input-group">
+            <input type="password"
+                [type]="fieldTextType ? 'text' : 'password'"
+                 id="password"
+                 class="form-control"
+                 formControlName="password">
+                 <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i  class="fa"
+                    [ngClass]="{
+                      'fa-eye-slash': !fieldTextType,
+                      'fa-eye': fieldTextType
+                    }"
+                    (click)="toggleFieldTextType()"></i>
+                  </span>
+               </div>
+          </div>
+        </div>
+        <button class="btn get-started-btn scrollto"
+                type="submit"
+                [disabled]="signinForm.invalid">Connexion</button>
+      </form>
+      <p class="text-danger">{{ errorMessage }}</p>
+
+      <div class="post-meta">
+        <!-- <span class="d-block"><a href="">Dave Rogers</a> in <a href="#">Food</a></span> -->
+        <span class="date-read">Nouveau ici?<span class="mx-1"></span><a routerLink="/auth/signup">Créer un compte</a></span>
+      <br/>
+        <span class="date-read"><span></span><a routerLink="/auth/recover-password">Mot de passe oublié ?</a></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col-10 offset-1">
+  <br/><br/><br/>
+<button class="btn get-started-btn scrollto mb-1" routerLink="/">
+<i class="fa fa-chevron-left"></i> Retour</button>
+</div>

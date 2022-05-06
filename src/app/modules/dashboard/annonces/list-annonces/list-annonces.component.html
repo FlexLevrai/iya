@@ -1,0 +1,60 @@
+<div class="col-10 offset-1">
+  <h3 class="text-center mb-5">Liste annonces</h3>
+  <div class="mat-elevation-z8 table-responsive">
+    <table class="table table-striped" [svData]="annonces" #sv="svDataTable" [svRowsOnPage]="5" svSortBy="name"
+      svSortOrder="asc">
+      <thead>
+        <tr>
+          <th>
+            <sv-default-sorter>Numero</sv-default-sorter>
+          </th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Catégorie</th>
+          <th>Adresse</th>
+          <th>Coordonnées</th>
+          <th>Média</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of sv.data; let i = index">
+          <td>{{ i+1}}</td>
+          <td>{{(item.title)}}</td>
+          <td>{{(item.description.length>10)? (item.description | slice:0:10)+'..':(item.description)}}</td>
+          <td>{{(item.categorie)}}</td>
+          <td>{{item.adresse}}</td>
+          <td>Long:{{item.longitude}} Lat:{{item.latitude}}</td>
+          <td><button class="btn btn-outline-secondary picture" (click)="open(content, item.id)" type="button"><i
+                class="fa fa-image"></i></button></td>
+          <td>
+            <mat-slide-toggle [(ngModel)]="item.isTreat" (click)="onActivate(item.id)">
+              {{item.isTreat ? 'Désactiver' : 'Activer'}}</mat-slide-toggle><button (click)="onDelete(item.id)"
+              class="btn btn-outline-danger btn-small">X</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">
+            <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Média</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <gallery [items]="images"></gallery>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+  </div>
+</ng-template>

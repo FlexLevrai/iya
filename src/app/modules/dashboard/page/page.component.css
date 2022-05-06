@@ -1,0 +1,25 @@
+.mat-h6, .mat-typography  h6 {
+  font: 700 !important;
+  margin: 0 0 12px;
+}
+h6 {
+  font-size: 18px;
+}
+@media (min-width: 768px){
+  .chart-area {
+    height: 40rem !important;
+}
+}
+@media (min-width: 500px){
+  .chart-area {
+    height: 60rem !important;
+}
+}
+@media (min-width: 400px){
+  .chart-area {
+    height: 80rem !important;
+}
+}
+.chart-area {
+  height: 40rem !important;
+}

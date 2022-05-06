@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <h3 class="text-center mb-5">Catégorie</h3>
+    <div class="row">
+      <!-- Formm -->
+  
+      <div class="col-xl-6 col-lg-6 col-md-6 col-12" *ngIf="!sendStatus">
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Titre</label>
+            <input type="text" class="form-control" formControlName="libele">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Description</label>
+            <textarea type="text" class="form-control" formControlName="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="photo">Image</label>
+            <div class="custom-file">
+              <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile"
+                (change)="detectFiles($event)">
+              <label class="custom-file-label" #labelImport for="validatedCustomFile">Choisir un fichier...</label>
+              <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div>
+          </div>
+          <div class="col-12">
+            <img *ngIf="url" src="{{url}}" class="img-fluid responsive" height="35px">
+            <p *ngIf="url" class="text-warning">Chargement en cours...</p>
+            <p class="text-danger" *ngIf="errorFile">Mauvais format /seulement les images minimum 100x100</p>
+            <p class="text-success" *ngIf="fileUploaded">Fichier chargé !</p>
+            <p class="text-success" *ngIf="addagain">Vous pouvez ajouter une autre image !</p>
+            <p class="text-danger" *ngIf="notAdd">Vous ne pouvez qu'envoyer une seule image!</p>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let userimg of userImage; let i = index"><img src="{{imgUrl}}{{userimg}}"
+                class="img-fluid responsive" width="50" height="50">&nbsp;&nbsp;<button type="submit"
+                class="btn btn-danger btn-small" (click)="deleteImgTab(i)">X</button></li>
+          </ul>
+          <br><br>
+          <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid || fileIsUploading">Ajouter</button>
+        </form>
+      </div>
+      <div *ngIf="sendStatus" class="text-success col-xl-6 col-lg-6 col-md-6 col-12">
+        <p>La catégorie a été ajoutée.</p><br />
+        <button type="submit" class="btn btn-primary" (click)="addAgain()">Ajouter un nouveau</button>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+        <div class="mat-elevation-z8 table-responsive">
+          <table class="table table-striped" [svData]="categories" #sv="svDataTable" [svRowsOnPage]="5" svSortBy="name"
+            svSortOrder="asc">
+            <thead>
+              <tr>
+                <th>
+                  <sv-default-sorter>Numero</sv-default-sorter>
+                </th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Média</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of sv.data; let i = index">
+                <td>{{ i+1}}</td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.description }}</td>
+                <td><button class="btn btn-outline-secondary picture" (click)="open(content, item.id)" type="button"><i
+                  class="fa fa-image"></i></button></td>
+                <td><button (click)="onUpdate(item.id)" class="btn btn-outline-primary btn-small">Modifier</button></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">
+                  <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Média</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <gallery [items]="images"></gallery>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+    </div>
+  </ng-template>
+  

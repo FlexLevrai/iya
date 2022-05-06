@@ -1,0 +1,43 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- 404 Error Text -->
+  <div class="col-6" *ngIf="!sendStatus">
+    <form [formGroup]="demandForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Décrivez un peu votre problème</label>
+        <textarea name="text" class="form-control" formControlName="description"></textarea>
+        <small id="emailHelp" class="form-text text-muted">Les informations sont confidentiels</small>
+      </div>
+      <div class="form-group">
+        <label for="photo">Photo</label>
+        <div class="custom-file">
+          <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile" (change)="detectFiles($event)"
+          >
+          <label class="custom-file-label" #labelImport for="validatedCustomFile">Choisir un fichier...</label>
+          <div class="invalid-feedback">Example invalid custom file feedback</div>
+        </div>
+      </div>
+      <div class="col-12">
+        <img *ngIf="url" src="{{url}}" class="img-fluid responsive"
+                      height="35px">
+          <p *ngIf="url" class="text-warning">Chargement en cours...</p>
+          <p class="text-danger" *ngIf="errorFile">Mauvais format /seulement les images minimum 100x100</p>
+          <p class="text-success" *ngIf="fileUploaded">Fichier chargé !</p>
+          <p class="text-success" *ngIf="addAgain">Vous pouvez ajouter une autre image !</p>
+          <p class="text-danger" *ngIf="notAdd">Vous avez atteind la limite de fichiers à ajouter !</p>
+        </div>
+        <ul class="list-group" >
+          <li class="list-group-item" *ngFor="let userimg of userImage; let i = index"><img src="{{imgUrl}}{{userimg}}" class="img-fluid responsive"
+              width="50" height="50">&nbsp;&nbsp;<button type="submit" class="get-started-btn scrollto btn-small" (click)="deleteImgTab(i)">X</button></li>
+      </ul>
+      <br><br>
+      <button type="submit" class="btn btn-warning" [disabled]="demandForm.invalid || fileIsUploading">Envoyer</button>
+    </form>
+  </div>
+<div *ngIf="sendStatus" class="text-success">
+   La demande a été tranférée à l'artisan en question. Il vous enverra un devis bientôt.
+   <a class="btn btn-warning" routerLink="/dashboard">Mes demandes</a>
+</div>
+</div>
+<!-- /.container-fluid -->

@@ -1,0 +1,377 @@
+/* You can add global styles to this file, and also import other style files */
+@import "https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i";
+@import "assets/dashboard/css/sb-admin-2.min.css";
+@import "assets/dashboard/vendor/fontawesome-free/css/all.min.css";
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import "https://fonts.googleapis.com/css?family=Alex+Brush";
+@import "assets/frontend/vendor/bootstrap/css/bootstrap.min.css";
+/* @import "assets/frontend/vendor/icofont/icofont.min.css"; */
+@import "assets/frontend/vendor/boxicons/css/boxicons.min.css";
+/* @import "assets/frontend/vendor/remixicon/remixicon.css"; */
+@import "assets/vendor/aos/aos.css";
+@import "assets/frontend/css/animate.min.css";
+@import "assets/frontend/css/style.css";
+@import "assets/front/css/flaticon.css";
+
+/* @import "~leaflet/dist/leaflet.css"; */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.marg {
+  margin-top: 15% !important;
+}
+
+.half-post-entry .caption {
+  font-size: .9rem;
+  text-transform: uppercase;
+  letter-spacing: .1rem;
+}
+
+.half-post-entry .img-bg,
+.half-post-entry .contents {
+  width: 50%;
+}
+
+@media (max-width: 991.98px) {
+
+  .half-post-entry .img-bg,
+  .half-post-entry .contents {
+    width: 100%;
+    height: 300px;
+  }
+}
+
+.half-post-entry .img-bg {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.half-post-entry .contents {
+  padding: 50px;
+  font-size: .9rem;
+  height: auto;
+}
+
+@media (max-width: 991.98px) {
+  .half-post-entry .contents {
+    padding: 30px;
+  }
+}
+
+.half-post-entry .contents h2 {
+  font-size: 26px;
+}
+
+.half-post-entry .contents h2 a {
+  color: #000;
+}
+
+/*--------------------------------------------------------------
+# Team
+--------------------------------------------------------------*/
+.team .member {
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.team .member .member-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.team .member .social {
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  right: 0;
+  opacity: 0;
+  transition: ease-in-out 0.3s;
+  text-align: center;
+}
+
+.team .member .social a {
+  transition: color 0.3s;
+  color: #111111;
+  margin: 0 3px;
+  padding-top: 7px;
+  border-radius: 50px;
+  width: 36px;
+  height: 36px;
+  background: #e03a3c;
+  display: inline-block;
+  transition: ease-in-out 0.3s;
+  color: #fff;
+}
+
+.team .member .social a:hover {
+  background: #111111;
+}
+
+.team .member .social i {
+  font-size: 18px;
+}
+
+.team .member .member-info {
+  padding: 25px 15px;
+}
+
+.team .member .member-info h4 {
+  font-weight: 700;
+  margin-bottom: 5px;
+  font-size: 18px;
+  color: #111111;
+}
+
+.team .member .member-info span {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  color: #aaaaaa;
+}
+
+.team .member .member-info p {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 26px;
+  color: #777777;
+}
+
+.team .member:hover .social {
+  opacity: 1;
+  bottom: 15px;
+}
+
+/* annonces */
+#contacts {
+  height: calc(100% - 177px);
+  /* overflow-y: scroll; */
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 735px) {
+  #contacts {
+    height: calc(100% - 149px);
+    overflow-x: hidden;
+  }
+
+  #contacts::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+#contacts.expanded {
+  height: calc(100% - 334px);
+}
+
+#contacts::-webkit-scrollbar {
+  width: 8px;
+  background: #2c3e50;
+}
+
+#contacts::-webkit-scrollbar-thumb {
+  background-color: #243140;
+}
+
+#contacts ul li.contact {
+  position: relative;
+  padding: 10px 0 15px 0;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+/* @media screen and (max-width: 735px) {
+  #contacts ul li.contact {
+    padding: 6px 0 46px 8px;
+  }
+} */
+#contacts ul li.contact {
+  background: #e6e6e6;
+}
+
+#contacts ul li.contact:hover {
+  background: #ecca59;
+}
+
+#contacts ul li.contact.active {
+  background: #ecca59;
+  border-right: 5px solid #ecca59;
+}
+
+#contacts ul li.contact.active span.contact-status {
+  border: 2px solid #ecca59 !important;
+}
+
+#contacts ul li.contact .wrap {
+  width: 88%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* @media screen and (max-width: 735px) {
+  #contacts ul li.contact .wrap {
+    width: 100%;
+  }
+} */
+#contacts ul li.contact .wrap span {
+  position: absolute;
+  left: 0;
+  margin: -2px 0 0 -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #2c3e50;
+  background: #95a5a6;
+}
+
+#contacts ul li.contact .wrap span.online {
+  background: #2ecc71;
+}
+
+#contacts ul li.contact .wrap span.away {
+  background: #f1c40f;
+}
+
+#contacts ul li.contact .wrap span.busy {
+  background: #e74c3c;
+}
+
+#contacts ul li.contact .wrap img {
+  width: 70px;
+  border-radius: 2%;
+  float: left;
+  margin-right: 10px;
+}
+
+/* @media screen and (max-width: 735px) {
+  #contacts ul li.contact .wrap img {
+    margin-right: 0px;
+  }
+} */
+#contacts ul li.contact .wrap .meta {
+  padding: 5px 0 0 0;
+}
+
+/* @media screen and (max-width: 735px) {
+  #contacts ul li.contact .wrap .meta {
+    display: none;
+  }
+} */
+#contacts ul li.contact .wrap .meta .name {
+  font-weight: 600;
+}
+
+#contacts ul li.contact .wrap .meta .preview {
+  margin: 5px 0 0 0;
+  padding: 0 0 1px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -moz-transition: 1s all ease;
+  -o-transition: 1s all ease;
+  -webkit-transition: 1s all ease;
+  transition: 1s all ease;
+}
+
+#contacts ul li.contact .wrap .meta .preview span {
+  position: initial;
+  border-radius: initial;
+  background: none;
+  border: none;
+  padding: 0 2px 0 0;
+  margin: 0 0 0 1px;
+  opacity: .5;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: -9px;
+}
+
+.form-field-group .form-field-label {
+  white-space: nowrap;
+}
+
+.form-field-group .form-field-label+mat-form-field {
+  margin-left: 10px;
+}
+
+.form-field-group mat-form-field {
+  width: 100%;
+}
+
+.ngx-whatsapp-button-float div {
+  margin-top: 26% !important;
+  /* margin-bottom: 5% !important; */
+}
+
+.ngx-pagination .current {
+  padding: 0.425rem !important;
+  background: #ecca59 !important;
+  color: #fefefe;
+  cursor: default;
+}
+
+
+.get-success-btn {
+  margin-left: 10px;
+  background: #07bc4c;
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 25px 9px 25px;
+  white-space: nowrap;
+  transition: 0.3s;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.get-success-btn:hover {
+  background: #047b32;
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .get-success-btn {
+    margin: 0 0px 0 0;
+    padding: 6px 18px;
+  }
+
+  .get-yellow-btn {
+    margin: 0 0px 0 0;
+    padding: 6px 18px;
+    display: none !important;
+  }
+}
+
+.get-yellow-btn {
+  margin-left: 10px;
+  background: #ffff4d;
+  color: #000;
+  border-radius: 50px;
+  padding: 8px 25px 9px 25px;
+  white-space: nowrap;
+  transition: 0.3s;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.get-yellow-btn:hover {
+  background: #e6e600;
+  color: #fff;
+}
+
+ul {
+  list-style-type: none !important;
+}

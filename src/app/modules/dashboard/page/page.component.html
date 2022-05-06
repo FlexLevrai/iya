@@ -1,0 +1,284 @@
+<div class="row">
+
+  <!-- Area Chart -->
+  <div class="col-xl-8 col-lg-7 col-12" *ngIf="!isAdmin">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-warning">Demande</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Dropdown Header:</div>
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div> -->
+        </div>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body haut">
+        <div class="">
+          <a class="get-started-btn scrollto mb-4" routerLink="/">Faire une demande</a>
+          <div *ngIf="disp" class="table-responsive">
+            <table class="table table-striped" [svData]="demande" #sv="svDataTable" [svRowsOnPage]="5" svSortBy="name"
+              svSortOrder="asc">
+              <thead>
+                <tr>
+                  <th>
+                    <sv-default-sorter>Date</sv-default-sorter>
+                  </th>
+                  <th>
+                    Artisan
+                  </th>
+                  <th>travail à faire</th>
+                  <th>Statut</th>
+                  <th>Medias</th>
+                  <th *ngIf="profession">Demander un détail</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of sv.data; let i = index">
+                  <td>{{ item.createAt | date: 'mediumDate' }}</td>
+                  <td>{{ item.metier}} <div *ngIf="item.executionDate">Execution probable | {{item.executionDate}}</div>
+                  </td>
+                  <td>{{ item.description }}</td>
+                  <td>{{ item.status }}</td>
+                  <td><button class="btn btn-outline-secondary picture" (click)="open(content, item.id)"
+                      type="button"><i class="fa fa-image"></i></button></td>
+                  <td>
+                    <div *ngIf="!profession && item.status ==='Phase Execution'"><button *ngIf="!item.executionDate"
+                        (click)="dateExecution(item.id)" class="btn btn-outline-primary">Date d'exécution</button></div>
+                    <div *ngIf="!profession && item.status ==='Phase Execution avec Date'"><button
+                        (click)="note(item.id)" class="btn btn-outline-primary">Noter le travail</button></div>
+                    <div *ngIf="!profession && item.status ==='Phase devis'"><button [hidden]="item===displ"
+                        (click)="showDevis(item.id)" class="btn btn-outline-primary">Voir le devis/Payer</button></div>
+                    <div *ngIf="!profession && item.status ==='Fin process'">Travail Exécuté</div>
+                    <div
+                      *ngIf="!profession && item.detailQuestions && item.status !=='Phase devis' && item.status !=='Phase Execution' && item.status !=='Phase Execution avec Date' && item.status !=='Fin process'">
+                      <p *ngIf="item===displ" class="text-success">Réponses soumises</p><button [hidden]="item===displ"
+                        (click)="handleReponse(item.id)" class="btn btn-outline-warning">Votre réponse</button>
+                    </div>
+                    <div *ngIf="profession && !item.detailQuestions">
+                      <p *ngIf="item===displ" class="text-success">Questions soumises</p><button [hidden]="item===displ"
+                        (click)="handleDetail(item.id)" class="btn btn-outline-warning">Mieux comprendre</button>
+                    </div>
+                  </td>
+                  <td *ngIf="profession && item.status ==='Nouvelle demande'"><a
+                      routerLink="/dashboard/devis/{{ item.id }}" class="btn btn-outline-primary">Emettre un devis</a>
+                  </td>
+                  <td *ngIf="profession && item.status !=='Nouvelle demande'">Aucune action de devis</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4">
+                    <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div *ngIf="!disp">Pas de demandes</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-8 col-lg-7 col-12" *ngIf="isAdmin">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-warning">Demande</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Dropdown Header:</div>
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div> -->
+        </div>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body haut">
+        <div class="">
+          <a class="get-started-btn scrollto mb-4" routerLink="/">Faire une demande</a>
+          <div *ngIf="disp" class="table-responsive">
+            <table class="table table-striped" [svData]="demande" #sv="svDataTable" [svRowsOnPage]="5" svSortBy="name"
+              svSortOrder="asc">
+              <thead>
+                <tr>
+                  <th>
+                    <sv-default-sorter>Date</sv-default-sorter>
+                  </th>
+                  <th>
+                    Artisan
+                  </th>
+                  <th>travail à faire</th>
+                  <th>Statut</th>
+                  <th>Medias</th>
+                  <th *ngIf="profession">Demander un détail</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of sv.data; let i = index">
+                  <td>{{ item.createAt | date: 'mediumDate' }}</td>
+                  <td>{{ item.metier}} <div *ngIf="item.executionDate">Execution probable | {{item.executionDate}}</div>
+                  </td>
+                  <td>{{ item.description }}</td>
+                  <td>{{ item.status }}</td>
+                  <td><button class="btn btn-outline-secondary picture" (click)="open(content, item.id)"
+                      type="button"><i class="fa fa-image"></i></button></td>
+                  <td>
+                    <div *ngIf="item.status ==='Phase Paiement'"><button (click)="confirmPay(item.id)"
+                        class="btn btn-outline-primary">Confirmer un paiment</button></div>
+                    <div *ngIf="!profession && item.status ==='Phase devis'"><button [hidden]="item===displ"
+                        (click)="showDevis(item.id)" class="btn btn-outline-primary">Voir le devis</button></div>
+                    <div *ngIf="!profession && item.status ==='Fin process'">Travail Exécuté</div>
+                  </td>
+                  <td *ngIf="profession && item.status ==='Nouvelle demande'"><a
+                      routerLink="/dashboard/devis/{{ item.id }}" class="btn btn-outline-primary">Emettre un devis</a>
+                  </td>
+                  <td *ngIf="profession && item.status !=='Nouvelle demande'">Aucune action de devis</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4">
+                    <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div *ngIf="!disp">Pas de demandes</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie Chart -->
+  <div class="col-xl-4 col-lg-5 col-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-warning">Devis</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Dropdown Header:</div>
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div> -->
+        </div>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <div *ngIf="dev" class="">
+          <div *ngIf="!isPayed" class="text-center">Aucun devis selectionné</div>
+          <div *ngIf="isPayed" class="text-center text-success">Transaction en cours</div>
+        </div>
+        <div id="myquote" *ngIf="!dev" class="table-responsive">
+          <h2>Devis</h2>
+          <button *ngIf="forPrint" class="get-started-btn scrollto" (click)="export()">PDF</button>&nbsp;
+          <button *ngIf="forPrint&&!isAdmin" class="btn btn-success" (click)="pay(payContent,idSelected)">Régler le
+            devis</button>
+          <table class="table table-striped" [svData]="devis" #sv="svDataTable" [svRowsOnPage]="30" svSortBy="name"
+            svSortOrder="asc">
+            <thead>
+              <tr>
+                <th>
+                  <sv-default-sorter>#</sv-default-sorter>
+                </th>
+                <th>Désignation</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire</th>
+                <th>Prix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of sv.data; let i = index">
+                <td>{{ i +1}}</td>
+                <td>{{ item.designation}}</td>
+                <td>{{ item.quantite }}</td>
+                <td>{{ item.prixUnitaire}}</td>
+                <td>{{ item.prixUnitaire * item.quantite}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><strong>Total</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>{{total}}</strong></td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Média</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- <form>
+      <div class="form-group">
+        <label for="dateOfBirth">Date of birth</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </form> -->
+    <gallery [items]="images"></gallery>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+  </div>
+</ng-template>
+<ng-template #payContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-pay">Paiement</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Pour les paiments veuillez vous rendre dans notre agence pour effectuer le paiment</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+  </div>
+</ng-template>

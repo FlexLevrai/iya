@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <h3 class="text-center mb-5">Notification</h3>
+    <div class="row">
+      <!-- Formm -->
+  
+      <div class="col-xl-6 col-lg-6 col-md-6 col-12" *ngIf="!sendStatus">
+        <form [formGroup]="notificationForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Titre</label>
+            <input type="text" class="form-control" formControlName="libele">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Message</label>
+            <textarea type="text" class="form-control" formControlName="description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="notificationForm.invalid">Ajouter</button>
+        </form>
+      </div>
+      <div *ngIf="sendStatus" class="text-success col-xl-6 col-lg-6 col-md-6 col-12">
+        <p>La notification a été envoyée.</p><br />
+        <button type="submit" class="btn btn-primary" (click)="addAgain()">Ajouter un nouveau</button>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+        <div class="mat-elevation-z8 table-responsive">
+          <table class="table table-striped" [svData]="notifications" #sv="svDataTable" [svRowsOnPage]="15" svSortBy="name"
+            svSortOrder="asc">
+            <thead>
+              <tr>
+                <th>
+                  <sv-default-sorter>Numero</sv-default-sorter>
+                </th>
+                <th>Titre</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of sv.data; let i = index">
+                <td>{{ i+1}}</td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.message }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">
+                  <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,637 @@
+ <!-- ======= Header ======= -->
+ <header id="header" class="fixed-top ">
+   <div class="container-fluid">
+
+     <div class="row justify-content-center">
+       <div class="col-xl-9 d-flex align-items-center justify-content-between">
+         <!-- <h1 class="logo"><a routerLink="/">Iya</a></h1> -->
+         <!-- Uncomment below if you prefer to use an image logo -->
+         <a href="#hero" class="logo"><img src="assets/img/iyalogo.png" alt="" heigth="100" class="img-fluid"></a>
+         <nav class="nav-menu d-none d-lg-block">
+           <ul>
+             <li><a href="tel:+22870511542"><i class="icofont-phone"></i> +228 7051 1542</a></li>
+             <li class="active"><a href="#hero">Accueil</a></li>
+             <li><a href="/annonces">Annonces</a></li>
+             <li><a href="/blog">Blog</a></li>
+             <!-- <li><a href="#contact">Contact</a></li> -->
+             <!-- <li *ngIf="!email"><a routerLink="/auth/signup">S'inscrire en tant qu'Artisan</a></li> -->
+           </ul>
+         </nav><!-- .nav-menu -->
+         <ul class="link-adjust" style="display:flex;margin-top: 2% !important;">
+           <li><a routerLink="/boutique" class="get-success-btn">Boutique</a></li>
+           <li><a routerLink="/dashboard" class="get-started-btn">Espace client</a></li>
+           <li><a routerLink="/dashboard" class="get-yellow-btn">Espace Artisans</a></li>
+         </ul>
+       </div>
+     </div>
+
+   </div>
+ </header><!-- End Header -->
+
+ <!-- ======= Hero Section ======= -->
+ <section id="hero" class="d-flex flex-column justify-content-center section-bg">
+   <div class="container" data-aos="zoom-out" data-aos-delay="100">
+     <div class="row justify-content-center">
+       <div class="col-xl-8 page-top">
+         <h1><strong>Des artisans<br></strong> professionnels près de chez vous</h1>
+         <div class="block-17 my-4">
+           <form action="" method="post" class="d-block d-flex">
+             <input type="text" class="example-full-width form-control"
+               placeholder="Recherchez un artisan : Maçon, menuisier, plombier, etc..." aria-label="Number"
+               [formControl]="myControl" [matAutocomplete]="auto" (ngModelChange)="doSomething($event)">
+             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+               <mat-option *ngFor="let option of filteredArtisans | async" [value]="option.value">
+                 <img src="assets/img/icones/{{option.value | lowercase}}.png"
+                   width="37">&nbsp;&nbsp;{{option.viewValue}}
+               </mat-option>
+             </mat-autocomplete>
+             <!--<input type="submit" class="search-submit get-started-btn scrollto hidy" value="Rechercher" (click)="searchArtisan()">-->
+           </form>
+         </div>
+       </div>
+     </div>
+     <button *ngIf='search' class="btn btn-warning" (click)="closeMap()">Fermer la carte X</button>
+   </div>
+
+
+   <div *ngIf='search'>
+     <div class="col-12 img-fluid" style="height: 300px; width:100%;" leaflet [leafletOptions]="options2"
+       [leafletLayersControl]="layersControl" (leafletMapReady)="onMapReady($event)" [leafletLayers]="layers">
+     </div>
+
+   </div>
+
+ </section><!-- End Hero -->
+
+ <main id="main">
+   <!-- ======= About Us Section ======= -->
+   <!-- ======= Features Section ======= -->
+   <section id="services" class="services bg-blue d-none d-sm-block">
+     <div class="container" data-aos="fade-up">
+       <div class="section-title">
+         <h2 class="text-black"><strong>Rechercher</strong> par secteur d'activité</h2>
+       </div>
+
+       <div class="row">
+         <div [ngClass]="(isSecteur)?'col-md-6 col-lg-6':'col-12'">
+           <div class="row">
+             <div
+               [ngClass]="(isSecteur)?'col-lg-3 col-md-3 col-sm-3 col-xs-3 align-items-stretch mb-3 mt-2':'col-lg-2 col-md-2 col-sm-3 col-xs-3 align-items-stretch mb-3 mt-2'"
+               class="" *ngFor="let metier of listMetier" data-aos="fade-up-right" data-aos-delay="100">
+               <a (click)="onArtisanSelect(metier.value)">
+                 <div class="icon-box" style="padding: 10px 5px !important; border-radius:8px">
+                   <div class="icon mx-auto"><img src="assets/img/icones/{{metier.value | lowercase}}.png" width="50">
+                   </div>
+                   <h5 class="text-center"><a style="color:black" data-toggle="collapse"
+                       href="#collapse0">{{metier.viewValue}}</a></h5>
+                 </div>
+               </a>
+             </div>
+           </div>
+         </div>
+         <div *ngIf='search1' [ngClass]="(isSecteur)?'col-md-6 col-lg-6':'col-12'">
+           <button *ngIf='search1' class="btn btn-warning" (click)="closeMap1()">Fermer la carte X</button>
+           <div *ngIf='searchArtisanBySecteur'>
+             <div class="col-12 img-fluid" style="height: 400px;" leaflet [leafletOptions]="options2"
+               [leafletLayersControl]="layersControl" (leafletMapReady)="onMapReady($event)" [leafletLayers]="layers">
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </section>
+   <!-- End Services Section -->
+   <section id="why-us" class="why-us  service-background">
+     <div class="container">
+       <div class="section-title">
+         <h2 class="text-white"><strong>Comment </strong> ça marche?</h2>
+       </div>
+       <div class="row icon-boxes">
+         <div class="col-lg-6 col-md-6 icon-box mt-4 mt-xl-0">
+           <div class="row">
+             <div class="col-lg-10 col-md-10 col-11 d-flex align-items-stretch icon-box content box"
+               data-aos="fade-right">
+               <div class="text-center col-12">
+                 <h3 class="mx-auto">Vous êtes à la recherche d'un artisan</h3>
+               </div>
+             </div>
+             <div class="col-lg-11 col-md-11 d-flex align-items-stretch">
+               <div class="icon-boxes d-flex flex-column justify-content-center">
+                 <div class="row">
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-receipt"></i>
+                       <p><strong>1. </strong>Je programme une intervention</p>
+                     </div>
+                   </div>
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-paperclip"></i>
+                       <p><strong>2. </strong>Un opérateur estimera et confirmera votre problème.</p>
+                     </div>
+                   </div>
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-user"></i>
+                       <p><strong>3. </strong>Intervention du technicien</p>
+                     </div>
+                   </div>
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-pen"></i>
+                       <p><strong>4. </strong>Notez l’intervention.</p>
+                     </div>
+                   </div>
+                   <div class="col-12 mt-5">
+                     <div class="mx-auto marg-f"><a routerLink="/auth/signup" class="get-started-btn">Créer un compte
+                         client</a></div><br /><br />
+                   </div>
+                 </div>
+               </div><!-- End .content-->
+             </div>
+           </div>
+         </div>
+         <!-- <div class="col-lg-1 col-md-1 d-none d-sm-block">
+                    <span class="vertical-line mt-5"></span>
+                  </div> -->
+         <div class="col-lg-6 col-md-6 icon-box mt-4 mt-xl-0">
+           <div class="row">
+             <div class="col-lg-10 col-md-10 col-12 d-flex align-items-stretch icon-box content box"
+               data-aos="fade-right">
+               <div class="text-center col-12">
+                 <h3 class="mx-auto">Vous êtes artisan</h3>
+               </div>
+             </div>
+             <div class="col-lg-11 col-md-11 col-12 d-flex align-items-stretch">
+               <div class="icon-boxes d-flex flex-column justify-content-center">
+                 <div class="row">
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-receipt"></i>
+                       <p><strong>1. </strong>Je m'inscris</p>
+                     </div>
+                   </div>
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-user"></i>
+                       <p><strong>2. </strong>Je postule à une <br />offre.</p>
+                     </div>
+                   </div>
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-user"></i>
+                       <p><strong>3. </strong>J'exécute le travail</p>
+                     </div>
+                   </div>
+                   <div class="col-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
+                     <div class="icon-box mt-4 mt-xl-0">
+                       <i class="bx bx-pen"></i>
+                       <p><strong>4. </strong>Je me fais noter.</p>
+                     </div>
+                   </div>
+                   <div class="col-12 mt-5">
+                     <div class="mx-auto marg-f"><a routerLink="/auth/signup" class="get-started-btn">Créer un compte
+                         artisan</a></div><br /><br />
+                   </div>
+                 </div>
+               </div><!-- End .content-->
+             </div>
+           </div>
+         </div>
+       </div>
+
+     </div>
+   </section>
+   <section id="services" class="services bg-blue">
+     <div class="container" data-aos="fade-up">
+
+
+       <div class="row">
+         <div class="col-lg-3 col-md-6 align-items-stretch" data-aos="fade-up-right" data-aos-delay="100">
+           <div class="icon-box">
+             <div class="icon mx-auto"><i class="flaticon-guarantee"></i></div>
+             <h4 class="text-center"><a data-toggle="collapse" href="#collapse0">Professionnalisme et efficacité</a>
+             </h4>
+             <div class="description collapse" id="collapse0">
+               <p class="text-center">Nous choisissons soigneusement nos artisans et mettons un accent particulier sur
+                 leurs expériences. Iya allie l’efficacité et le professionnalisme.
+               </p>
+             </div>
+           </div>
+         </div>
+
+         <div class="col-lg-3 col-md-6 align-items-stretch mt-4 mt-md-0" data-aos="fade-up-right" data-aos-delay="200">
+           <div class="icon-box">
+             <div class="icon mx-auto"><i class="flaticon-meeting-point"></i></div>
+             <h4 class="text-center"><a data-toggle="collapse" href="#collapse1">Pourquoi nous <br />choisir?</a></h4>
+             <div class="description collapse" id="collapse1">
+               <p class="text-center">Grâce à nous, vous avez la possibilité de trouver une panoplie d’artisans
+                 professionnels et doués à proximité de vous. Nous prenons des mesures pour que vous soyez satisfaits
+                 des résultats et adossons les responsabilités si un quelconque problème survenait au cours de
+                 l’intervention de l’artisan.</p>
+             </div>
+           </div>
+         </div>
+
+         <div class="col-lg-3 col-md-6 align-items-stretch mt-4 mt-lg-0" data-aos="fade-up-left" data-aos-delay="300">
+           <div class="icon-box">
+             <div class="icon mx-auto"><i class="flaticon-detective"></i></div>
+             <h4 class="text-center"><a data-toggle="collapse" href="#collapse2">De Meilleurs <br />artisans</a></h4>
+             <div class="description collapse" id="collapse2">
+               <p class="text-center">Dans le but de pousser les artisans à se perfectionner et offrir des services de
+                 qualité, vous avez la possibilité de donner une note sur cinq (5) à chaque artisan ayant exécuté un
+                 travail pour vous. Nous primerons ainsi chaque mois l’artisan ayant reçu les meilleures notes.</p>
+             </div>
+           </div>
+         </div>
+
+         <div class="col-lg-3 col-md-6 align-items-stretch mt-4 mt-lg-0" data-aos="fade-up-left" data-aos-delay="400">
+           <div class="icon-box">
+             <div class="icon mx-auto"><i class="flaticon-support"></i></div>
+             <h4 class="text-center"><a data-toggle="collapse" href="#collapse3">Notre support <br />technique</a></h4>
+             <div class="description collapse" id="collapse3">
+               <p class="text-center">Nous sommes à votre écoute pour toute inquiétude ou suggestion. Des chats bots
+                 sont intégrés au site afin de nous rapprocher un peu plus de vous.</p>
+             </div>
+           </div>
+         </div>
+
+
+       </div>
+
+     </div>
+   </section>
+   <!-- <section id="features" class="features service-background">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2 class="text-white"><strong>Comment </strong> ça marche?</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-5 col-md-5 wow bounceInUp mr-5 pr-5" data-aos="fade-left">
+            <div class="icon-box col-12 order-2 order-lg-1 box">
+              <h4 class="text-center">Vous êtes à la recherche d'un artisan</h4> 
+            </div>
+            <div class="row mt-5">
+              <div class="icon-box col-6 d-flex align-items-stretch">
+                <div class="mt-4 mt-xl-0">
+                  <i class="bx bx-receipt"></i>
+                </div>
+                <div>
+                  <p class="text-center text-white"><strong>1. </strong>Je programme une intervention</p>
+                </div>
+              </div>
+              <div class="icon-box col-6">
+                <div class="ml-5">
+                  <i class="bx bx-paperclip"></i>
+                </div>
+                <p class="text-center text-white"><strong>2. </strong>Un opérateur estimera et confirmera votre problème.</p>
+              </div>
+            </div>
+            <div class="row mt-5">
+              <div class="icon-box col-6">
+                <div class="ml-5">
+                  <i class="bx bx-user"></i>
+                </div>
+                <div>
+                  <p class="text-center text-white"><strong>3. </strong>Intervention du technicien</p>
+                </div>
+              </div>
+              <div class="icon-box col-6">
+                <div class="ml-5">
+                  <i class="bx bx-pen"></i>
+                </div>
+                <p class="text-center text-white"><strong>4. </strong>Notez l’intervention.</p>
+              </div>
+            </div>
+            <div class="icon-box mt-5">
+              <div class="mx-auto ml-5 mr-5 marg-f"><a routerLink="/auth/signup" class="get-started-btn">Créer un compte client</a></div><br/><br/>
+            </div>
+          </div>
+          <div class="col-lg-5 col-md-5 wow bounceInUp" data-aos="fade-right"  style="border-left: 1px solid #eee;">
+            <div class="mr-5 ml-5">
+              <div class="icon-box col-12 order-2 order-lg-1 box">
+                <h4 class="mx-auto marg-h">Vous êtes artisan</h4> 
+              </div>
+              <div class="row mt-5">
+                <div class="icon-box col-6">
+                  <div class="ml-5">
+                    <i class="bx bx-receipt"></i>
+                  </div>
+                  <div>
+                    <p class="text-center text-white"><strong>1. </strong>Je m'inscris</p>
+                  </div>
+                </div>
+                <div class="icon-box col-6">
+                  <div class="ml-5">
+                    <i class="bx bx-paperclip"></i>
+                  </div>
+                  <p class="text-center text-white"><strong>2. </strong>Je postule à une <br/>offre.</p>
+                </div>
+              </div>
+              <div class="row mt-5">
+                <div class="icon-box col-6">
+                  <div class="ml-5">
+                    <i class="bx bx-user"></i>
+                  </div>
+                  <div>
+                    <p class="text-center text-white"><strong>3. </strong>J'exécute le travail</p>
+                  </div>
+                </div>
+                <div class="icon-box col-6">
+                  <div class="ml-5">
+                    <i class="bx bx-pen"></i>
+                  </div>
+                  <p class="text-center text-white"><strong>4. </strong>Je me fais <br/>noter.</p>
+                </div>
+              </div>
+              <div class="icon-box mt-5">
+                <div class="mx-auto ml-5 mr-5" style="margin-left:20% !important ;"><a routerLink="/auth/signup" class="get-started-btn">Créer un compte artisan</a></div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+      </div>
+    </section> -->
+   <!-- End Features Section -->
+   <section id="about" class="about">
+     <div class="container" data-aos="fade-up">
+
+       <div class="row content">
+         <div class="col-12 box wow bounceInUp section-bg" style="background-color: #e6e6e6 !important;">
+           <div class="section-title">
+             <h2>Boutique</h2>
+           </div>
+
+           <div class="row team ">
+
+             <div class="col-lg-3 col-md-3 d-flex align-items-stretch" *ngFor="let boutique of boutiques  | slice:0:4">
+               <div class="member" data-aos="fade-up" data-aos-delay="100">
+                 <div class="member-img">
+                   <img src="{{imgUrl}}{{boutique.images | split: ',': 0 }}" class="img-fluid" alt="">
+                   <div class="social">
+                     <a routerLink="/boutique/{{boutique.id}}"><i class="icofont-eye"></i></a>
+                     <a href="https://www.facebook.com/iya.tg" target="_blank"><i class="icofont-facebook"></i></a>
+                   </div>
+                 </div>
+                 <div class="member-info">
+                   <h4>{{boutique.title}} {{boutique.prix}} F CFA</h4>
+                   <span>{{(boutique.description.length>50)? (boutique.description | slice:0:50)+'...':(boutique.description)}}</span>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <a routerLink="/boutique" class="get-started-btn">Voir plus</a>
+         </div>
+         <!-- <div class="col-lg-5 box wow bounceInUp">
+            <div class="section-title">
+              <h2>Annonces</h2>
+            </div>
+            <div class="row">
+              <div id="contacts">
+                <ul>
+                  <li class="contact">
+                    <div class="wrap">
+                      <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Louis Litt</p>
+                        <p class="preview">You just got LITT up, Mike.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="contact">
+                    <div class="wrap">
+                      <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Louis Litt</p>
+                        <p class="preview">You just got LITT up, Mike.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="contact active">
+                    <div class="wrap">
+                      <span class="contact-status busy"></span>
+                      <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Harvey Specter</p>
+                        <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="contact">
+                    <div class="wrap">
+                      <span class="contact-status away"></span>
+                      <img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Rachel Zane</p>
+                        <p class="preview">I was thinking that we could have chicken tonight, sounds good?</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="contact">
+                    <div class="wrap">
+                      <span class="contact-status online"></span>
+                      <img src="http://emilcarlsson.se/assets/donnapaulsen.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Donna Paulsen</p>
+                        <p class="preview">Mike, I know everything! I'm Donna..</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="contact">
+                    <div class="wrap">
+                      <span class="contact-status busy"></span>
+                      <img src="http://emilcarlsson.se/assets/jessicapearson.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Jessica Pearson</p>
+                        <p class="preview">Have you finished the draft on the Hinsenburg deal?</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="contact">
+                    <div class="wrap">
+                      <span class="contact-status"></span>
+                      <img src="http://emilcarlsson.se/assets/haroldgunderson.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Harold Gunderson</p>
+                        <p class="preview">Thanks Mike! :)</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="contact">
+                    <div class="wrap">
+                      <span class="contact-status"></span>
+                      <img src="http://emilcarlsson.se/assets/danielhardman.png" alt="" />
+                      <div class="meta">
+                        <p class="name">Daniel Hardman</p>
+                        <p class="preview">We'll meet again, Mike. Tell Jessica I said 'Hi'.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <br/>
+                  <a routerLink="/annonces" class="get-started-btn">Voir plus</a>
+                </ul>
+              </div>
+            </div>
+          </div> -->
+       </div>
+     </div>
+   </section><!-- End About Us Section -->
+
+   <!-- ======= Clients Section ======= -->
+   <!-- <section id="clients" class="clients">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row no-gutters clients-wrap clearfix wow fadeInUp">
+
+          <div class="col-lg-4 col-md-6 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/logo-mandis.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/logo-sigma.png" class="img-fluid" alt="">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/logo-dliver.png" class="img-fluid" alt="">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section> -->
+   <!-- End Clients Section -->
+
+   <!-- ======= Faq Section ======= -->
+   <section id="faq" class="faq bg-orange">
+     <div class="container-fluid" data-aos="fade-up">
+
+       <div class="row">
+
+         <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1"
+           data-aos="fade-left">
+
+           <div class="content">
+             <h3><strong>Foire Aux Questions</strong></h3>
+           </div>
+
+           <div class="accordion-list">
+             <ul>
+               <li>
+                 <a data-toggle="collapse" class="collapse" href="#accordion-list-1">Combien coûte l'inscription pour un
+                   artisan? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                 <div id="accordion-list-1" class="collapse show" data-parent=".accordion-list">
+                   <p>
+                     L'inscription est gratuite et vous recevez un SMS de confirmation
+                   </p>
+                 </div>
+               </li>
+
+               <li>
+                 <a data-toggle="collapse" href="#accordion-list-2" class="collapsed">Que faire si je perds mon mot de
+                   passe? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                 <div id="accordion-list-2" class="collapse" data-parent=".accordion-list">
+                   <p>
+                     En vous connectant, vous verrez un lien <strong>Mot de passe oublié</strong>. Cliquez dessus et
+                     suivez les instructions.
+                   </p>
+                 </div>
+               </li>
+
+               <li>
+                 <a data-toggle="collapse" href="#accordion-list-3" class="collapsed">Pourquoi dois-je donner ma
+                   position? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                 <div id="accordion-list-3" class="collapse" data-parent=".accordion-list">
+                   <p>
+                     Les résultats sont proposés en fonction de votre situation géographique, en donnant votre position
+                     nous faisons tout pour vous présenter les artisans les plus proches de vous
+                   </p>
+                 </div>
+               </li>
+
+             </ul>
+           </div>
+
+         </div>
+
+         <div class="col-lg-5 align-items-stretch order-1 order-lg-2 img" data-aos="fade-right"
+           style='background-image: url("assets/img/faq.jpg");'>&nbsp;</div>
+       </div>
+
+     </div>
+   </section><!-- End Faq Section -->
+
+   <!-- ======= Contact Section ======= -->
+   <section id="contact" class="contact">
+     <div class="container" data-aos="fade-up">
+
+       <div class="section-title">
+         <h2>Contact</h2>
+         <p>Nous contacter.</p>
+       </div>
+     </div>
+
+     <div class="container">
+
+       <div class="row mt-5">
+
+         <div class="col-lg-4" data-aos="fade-left">
+           <div class="info">
+             <div class="address">
+               <i class="ri-map-pin-line"></i>
+               <h4>Localisation:</h4>
+               <p>Agoè 2 lions</p>
+             </div>
+
+             <div class="email">
+               <i class="ri-mail-line"></i>
+               <h4>Email:</h4>
+               <p>info@iyatg.com</p>
+             </div>
+
+             <div class="phone">
+               <i class="ri-phone-line"></i>
+               <h4>Téléphone:</h4>
+               <p>+228 7051 1542</p>
+             </div>
+
+           </div>
+
+         </div>
+
+         <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-right">
+
+           <div>
+             <iframe
+               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3311302410802!2d1.185574214769115!3d6.219992795497395!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x102159ef13244bd1%3A0xcee160ecf5162339!2sIYA!5e0!3m2!1sen!2stg!4v1607861750360!5m2!1sen!2stg"
+               width="600" height="250" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+               tabindex="0"></iframe>
+           </div>
+
+         </div>
+
+       </div>
+
+     </div>
+   </section><!-- End Contact Section -->
+   <section id="faq" class="faq">
+     <div class="container-fluid" data-aos="fade-up">
+
+       <div class="row">
+
+
+         <div (click)="goExternal()" class="col-12 align-items-stretch order-1 order-lg-2 img" data-aos="fade-right"
+           style='background-image: url("assets/img/newbanner.png");'>&nbsp;</div>
+       </div>
+
+     </div>
+   </section><!-- End Faq Section -->
+ </main><!-- End #main -->
+ <app-footer></app-footer>
+ <!--Start of Tawk.to Script-->
+ <!--End of Tawk.to Script-->

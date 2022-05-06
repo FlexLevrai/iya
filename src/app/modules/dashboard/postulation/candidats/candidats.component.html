@@ -1,0 +1,34 @@
+<div class="col-10 offset-1">
+    <h1>Liste des Candidats</h1>
+    <div class="mat-elevation-z8">
+      <table class="table table-striped" [svData]="postulations" #sv="svDataTable" [svRowsOnPage]="15" svSortBy="name" svSortOrder="asc">
+        <thead>
+        <tr>
+            <th>
+                <sv-default-sorter>Numero</sv-default-sorter>
+            </th>
+            <th>Chantier</th>
+            <th>Motivation</th>
+            <th>Evaluation</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of sv.data; let i = index">
+            <td>{{ i+1}}</td>
+            <td>{{annonce.title}}</td>
+            <td>{{item.description}}</td>
+            <td>7/10 sur 25</td>
+            <td><mat-slide-toggle [(ngModel)]="item.isOk" (click)="onActivate(item.id)">{{item.isOk ? 'Annuler' : 'Valider'}}</mat-slide-toggle></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="4">
+                <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    </div>
+  </div>

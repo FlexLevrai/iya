@@ -1,0 +1,77 @@
+<div class="row">
+
+  <!-- Pie Chart -->
+  <div class="col-xl-4 col-lg-5">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Vérification Numéro</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+        </div>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <div *ngIf="profils.verified" class="chart-pie pt-4 pb-2">
+          <div class="alert alert-success" role="alert">
+            Votre numéro est bien vérifié
+          </div>
+        </div>
+        <div *ngIf="!profils.verified" class="chart-pie pt-4 pb-2">
+
+          <button class="btn btn-primary" (click)="onCheckNumber()">
+            Vérifiez votre numero
+          </button>
+          <div *ngIf="!msg" class="text-small text-success">
+            Un message a été envoyé.
+            <button class="btn btn-primary" (click)="onCheckNumber()">
+              Renvoyé
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Area Chart -->
+  <div class="col-xl-8 col-lg-7">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Profil</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+
+        </div>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <div class="chart-area">
+          <dl>
+            <dt>Nom</dt>
+            <dd>{{nom}}</dd>
+
+            <dt *ngIf="showName">Prénom</dt>
+            <dd>{{prenom}}</dd>
+
+            <dt>Téléphone</dt>
+            <dd>{{telephone}}</dd>
+            <dt>Adresse</dt>
+            <dd>{{profils.adresse}}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="col-12 img-fluid" style="height: 300px; width:100%;" leaflet [leafletOptions]="option"
+  [leafletLayersControl]="layersControl" (leafletMapReady)="onMapReady($event)" [leafletLayers]="layers">
+</div>
+<p class="text-small">Sentez-vous libre d'ajuster la position du chantier en cliquant sur la carte</p>

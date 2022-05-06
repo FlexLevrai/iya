@@ -1,0 +1,40 @@
+<div class="col-10 offset-1">
+    <h1>Liste des commandes</h1>
+    <div class="mat-elevation-z8">
+      <table class="table table-striped" [svData]="commandes" #sv="svDataTable" [svRowsOnPage]="15" svSortBy="name" svSortOrder="asc">
+        <thead>
+        <tr>
+            <th>
+                <sv-default-sorter>Numero</sv-default-sorter>
+            </th>
+            <th>Nom et prénoms</th>
+            <th>Code</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>Quantité</th>
+            <th>Coordonnées</th>
+            <th>Statut</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of sv.data; let i = index">
+            <td>{{ i+1}}</td>
+            <td>{{item.fullname}}</td>
+            <td>{{item.productcode}}</td>
+            <td>{{item.telephone}}</td>
+            <td>{{item.adresse}}</td>
+            <td>{{item.nombre}}</td>
+            <td>Long:{{item.longitude}}  Lat:{{item.latitude}}</td>
+            <td>{{item.isTreat ? 'Non traitée' : 'Traitée'}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="4">
+                <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    </div>
+  </div>

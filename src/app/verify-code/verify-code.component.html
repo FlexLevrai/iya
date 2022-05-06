@@ -1,0 +1,39 @@
+
+<div class="container marg">
+  <div class="half-post-entry d-block d-lg-flex bg-light">
+    <div class="img-bg" style="background-image: url('assets/images/destination-5.jpg')"></div>
+    <div class="contents">
+      <h2>IYA-Vérification-Code</h2>
+      <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="code">Code</label>
+          <input type="text"
+                 id="code"
+                 [ngClass]="{'form-control': true,
+                 'is-invalid': verifyForm.controls['code'].errors && !verifyForm.controls['code'].pristine,
+                 'is-valid': !verifyForm.controls['code'].errors && !verifyForm.controls['code'].pristine}"
+                 formControlName="code" required>
+            <div *ngIf="verifyForm.controls['code'].errors && !verifyForm.controls['code'].pristine"
+                 class="text-danger small_font">
+                 <p [hidden]="!verifyForm.controls['code'].errors.required">code est requis.</p>
+                 <p [hidden]="!verifyForm.controls['code'].errors.pattern">Le code est invalide.</p>
+               </div>
+        </div>
+        <button class="btn btn-danger"
+                type="submit"
+                [disabled]="verifyForm.invalid">Vérifier</button>
+      </form>
+      <p *ngIf="errorCode" class="text-danger">Code erroné</p>
+
+      <div class="post-meta">
+        <span class="date-read"><span class="mx-1"></span><a routerLink="/auth/signin">connexion</a></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col-10 offset-1">
+  <br/><br/><br/>
+<button class="btn btn-outline-warning mb-1" routerLink="/">
+<i class="fa fa-chevron-left"></i> Retour</button>
+</div>

@@ -1,0 +1,129 @@
+ <!-- ======= Header ======= -->
+ <header id="header" class="fixed-top ">
+   <div class="container-fluid">
+
+     <div class="row justify-content-center">
+       <div class="col-xl-9 d-flex align-items-center justify-content-between">
+         <!-- <h1 class="logo"><a routerLink="/">Iya</a></h1> -->
+         <!-- Uncomment below if you prefer to use an image logo -->
+         <a href="/#hero" class="logo"><img src="assets/img/iyalogo.png" alt="" heigth="100" class="img-fluid"></a>
+         <nav class="nav-menu d-none d-lg-block">
+           <ul>
+             <li><a href="tel:+22870511542"><i class="icofont-phone"></i> +228 7051 1542</a></li>
+             <li><a href="/#hero">Accueil</a></li>
+             <!-- <li  class="active"><a href="/boutique">Boutique</a></li> -->
+             <li><a href="/annonces">Annonces</a></li>
+             <li><a href="/blog">Blog</a></li>
+             <!-- <li><a href="/#contact">Contact</a></li>
+             <li *ngIf="!email"><a routerLink="/auth/signup">S'inscrire en tant qu'Artisan</a></li> -->
+
+           </ul>
+         </nav><!-- .nav-menu -->
+         <ul class="link-adjust" style="display:flex;margin-top: 2% !important;">
+           <li><a routerLink="/boutique" class="get-success-btn">Boutique</a></li>
+           <li><a routerLink="/dashboard" class="get-started-btn">Espace client</a></li>
+           <li><a routerLink="/dashboard" class="get-yellow-btn">Espace Artisans</a></li>
+         </ul>
+       </div>
+     </div>
+
+   </div>
+ </header><!-- End Header -->
+ <section id="about" class="about" style="background-color: #6b6a6a !important;">
+ </section>
+ <!-- ======= Breadcrumbs ======= -->
+ <!-- <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Portfolio Details</li>
+        </ol>
+        <h2>Portfolio Details</h2>
+
+      </div>
+    </section> -->
+ <!-- End Breadcrumbs -->
+
+ <!-- ======= Portfolio Details Section ======= -->
+ <section id="portfolio-details" class="portfolio-details">
+   <div class="container">
+
+     <div class="portfolio-details-container">
+
+       <!-- <div class="owl-carousel portfolio-details-carousel">
+            <img *ngFor="let image of images" src="{{image}}" class="img-fluid" alt="produit-image-detail">
+          </div> -->
+       <gallery [items]="images"></gallery>
+       <div class="portfolio-info">
+         <h3>Détail sur le produit</h3>
+         <ul>
+           <li><strong>Livraison</strong>: {{ product.livraison}}</li>
+           <li><strong>Prix</strong>: {{product.prix}} F CFA</li>
+           <li><strong>Identifiant du produit</strong>: {{product.productId}}</li>
+           <li><button (click)="onCommande()" class="get-started-btn scrollto">Commander</button></li>
+         </ul>
+       </div>
+
+     </div>
+
+     <div class="portfolio-description">
+       <h2>{{product.title}}</h2>
+       <p>
+         {{product.description}}
+       </p>
+     </div>
+
+   </div>
+ </section><!-- End Portfolio Details Section -->
+ <app-footer></app-footer>
+ <ng-template #content let-modal>
+   <div class="modal-header">
+     <h4 class="modal-title" id="modal-basic-title">Commander</h4>
+     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+       <span aria-hidden="true">&times;</span>
+     </button>
+   </div>
+   <div class="modal-body">
+     <!-- <form [formGroup]="commandeForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Nom et prénoms</label>
+          <input type="text" class="form-control" formControlName="fullname">
+        </div>
+        <div class="form-group">
+          <label for="quantite">Quantité</label>
+          <input type="text" class="form-control" formControlName="nombre">
+        </div>
+        <div class="form-group">
+          <label for="adresse">Adresse</label>
+          <input type="text" class="form-control" formControlName="adresse">
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="commandeForm.invalid">Ajouter</button>
+      </form> -->
+     <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+       <div class="form-group">
+         <label for="libele">Nom et prénoms</label>
+         <input name="fullname" class="form-control" ngModel #fullname="ngModel" required>
+       </div>
+       <div [hidden]="fullname.valid || fullname.pristine" class="alert alert-danger">
+         Name is required
+       </div>
+       <div class="form-group">
+         <label for="libele">Quantité</label>
+         <input type="number" name="nombre" class="form-control" ngModel #nombre="ngModel" required>
+       </div>
+       <div class="form-group">
+         <label for="libele">Numéro</label>
+         <input name="numero" type="tel" placeholder="+228XXX ou 00228" class="form-control" ngModel #numero="ngModel"
+           required>
+       </div>
+       <button class="btn btn-info" [disabled]="f.invalid" type="submit">Enregister</button>
+     </form>
+     <div class="col-12 img-fluid" style="height: 300px; width:100%;" leaflet [leafletOptions]="options"
+       [leafletLayersControl]="layersControl" (leafletMapReady)="onMapReady($event)" [leafletLayers]="layers">
+     </div>
+   </div>
+   <div class="modal-footer">
+     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+   </div>
+ </ng-template>

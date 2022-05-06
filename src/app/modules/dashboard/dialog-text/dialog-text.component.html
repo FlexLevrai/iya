@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Action</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>{{data.name}}</mat-label>
+    <textarea matInput
+    cdkTextareaAutosize
+    #autosize="cdkTextareaAutosize"
+    cdkAutosizeMinRows="1"
+    cdkAutosizeMaxRows="5" [(ngModel)]="data.contenu"></textarea>
+  </mat-form-field>
+  <p>Vos disponibilités</p>
+  <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+  </ngb-datepicker>
+  <ng-template #t let-date let-focused="focused">
+    <span class="custom-day"
+          [class.focused]="focused"
+          [class.range]="isRange(date)"
+          [class.faded]="isHovered(date) || isInside(date)"
+          (mouseenter)="hoveredDate = date"
+          (mouseleave)="hoveredDate = null">
+      {{ date.day }}
+    </span>
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Annuler</button>
+  <button mat-button [mat-dialog-close]="data.contenu" cdkFocusInitial>Ok</button>
+</div>

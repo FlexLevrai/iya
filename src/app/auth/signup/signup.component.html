@@ -1,0 +1,188 @@
+<div class="container marg">
+  <div class="half-post-entry d-block d-lg-flex bg-light">
+    <div class="img-bg col-lg-4 col-md-4" style="background-image: url('assets/images/destination-5.jpg')"></div>
+    <div class="contents col-lg-8 col-md-8">
+      <span class="caption">IYA-Création de compte</span>
+      <h2>Créez un compte gratuitement</h2>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <mat-horizontal-stepper>
+          <mat-step [stepControl]="firstFormGroup" errorMessage="le champ profession est requis.">
+            <ng-template matStepLabel><strong>Vous êtes</strong></ng-template>
+            <strong>Vous êtes:</strong>
+            <div class="form-group">
+              <label for="telephone">Numéro de téléphone *</label><br />
+              <input type="text" class="form-control" ng2TelInput [ng2TelInputOptions]="{initialCountry: 'tg'}"
+                formControlName="telephone" (hasError)="hasError($event)" (ng2TelOutput)="getNumber($event)"
+                (intlTelInputObject)="telInputObject($event)" (countryChange)="onCountryChange($event)">
+              <div *ngIf="phoneError" class="text-danger">
+                <p>Le numero est invalide.</p>
+              </div>
+              <div *ngIf="signupForm.controls['telephone'].errors && !signupForm.controls['telephone'].pristine"
+                class="text-danger small_font">
+                <p [hidden]="!signupForm.controls['telephone'].errors.required">Le téléphone est requis.</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Type de compte *</label>
+              <select [ngClass]="{'form-control': true,
+                  'is-invalid': signupForm.controls['userType'].errors && !signupForm.controls['userType'].pristine,
+                  'is-valid': !signupForm.controls['userType'].errors && !signupForm.controls['userType'].pristine}"
+                type="text" id="firstName" placeholder="Nom" formControlName="userType"
+                (change)="displayProfession($event.target.value)">
+                <option value="artisan">Je suis Artisan</option>
+                <option value="user">Je recherche un artisan</option>
+              </select>
+              <div *ngIf="signupForm.controls['userType'].errors && !signupForm.controls['userType'].pristine"
+                class="text-danger small_font">
+                <p [hidden]="!signupForm.controls['userType'].errors.required">Ce champ est requis.</p>
+              </div>
+            </div>
+            <div *ngIf="isProfession" class="form-field-group mt-5">
+              <mat-form-field appearance="fill">
+                <mat-label>Profession</mat-label>
+                <mat-select (selectionChange)="getProfession($event)" formControlName="profession">
+                  <mat-option *ngFor="let metier of listMetier" [value]="metier.value">
+                    {{metier.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <button mat-button matStepperNext color="primary">Suivant</button>
+            </div>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel><strong>Identité</strong></ng-template>
+            <strong>Identité</strong>
+            <div class="form-group">
+              <label for="surname">Nom et prénoms *</label>
+              <input type="text" id="surname"
+                [ngClass]="{'form-control': true,
+                         'is-invalid': signupForm.controls['surname'].errors && !signupForm.controls['surname'].pristine,
+                         'is-valid': !signupForm.controls['surname'].errors && !signupForm.controls['surname'].pristine}" formControlName="surname">
+              <div *ngIf="signupForm.controls['surname'].errors && !signupForm.controls['surname'].pristine"
+                class="text-danger small_font">
+                <p [hidden]="!signupForm.controls['surname'].errors.required">Le Nom est requis.</p>
+                <p [hidden]="!signupForm.controls['surnname'].errors.pattern">Le nom est invalide.</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password"><i class="fa fa-unlock"></i> Mot de passe *</label>
+              <div class="input-group">
+                <input [type]="fieldTextType ? 'text' : 'password'"
+                  [ngClass]="{'form-control': true,
+                                'is-invalid': signupForm.controls['password'].errors && !signupForm.controls['password'].pristine,
+                                'is-valid': !signupForm.controls['password'].errors && !signupForm.controls['password'].pristine}" id="inputPassword"
+                  placeholder="Mot de passe" formControlName="password" required="required">
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="fa" [ngClass]="{
+                                'fa-eye-slash': !fieldTextType,
+                                'fa-eye': fieldTextType
+                              }" (click)="toggleFieldTextType()"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="text-danger small_font"
+                *ngIf="signupForm.controls['password'].errors && !signupForm.controls['password'].pristine">
+                <span
+                  [ngClass]="signupForm.controls['password'].hasError('required') || signupForm.controls['password'].hasError('minlength')  ? 'text-danger' : 'text-success'">
+                  6 caractères au moins!
+                </span>&nbsp;
+                <span
+                  [ngClass]="signupForm.controls['password'].hasError('required') || signupForm.controls['password'].hasError('hasNumber')  ? 'text-danger' : 'text-success'">
+                  Doit contenir un chiffre!
+                </span>&nbsp;
+                <span
+                  [ngClass]="signupForm.controls['password'].hasError('required') || signupForm.controls['password'].hasError('hasCapitalCase')  ? 'text-danger' : 'text-success'">
+                  Doit contenir une majuscule!
+                </span>&nbsp;
+                <span
+                  [ngClass]="signupForm.controls['password'].hasError('required') || signupForm.controls['password'].hasError('hasSmallCase')  ? 'text-danger' : 'text-success'">
+                  Des minuscules!
+                </span>&nbsp;
+                <!-- <span
+                        [ngClass]="signupForm.controls['password'].hasError('required') || signupForm.controls['password'].hasError('hasSpecialCharacters') ? 'text-danger' : 'text-success'">
+                        Doit contenir un caractère spécial!
+                      </span> -->
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="label_display" for="confirmPassword">Confirmer le mot de passe *</label>
+              <div class="input-group">
+                <input [type]="fieldTextType1 ? 'text' : 'password'"
+                  [ngClass]="{'form-control': true,
+                              'is-invalid': signupForm.controls['confirmPassword'].errors && !signupForm.controls['confirmPassword'].pristine,
+                              'is-valid': !signupForm.controls['confirmPassword'].errors && !signupForm.controls['confirmPassword'].pristine}" id="confirmPassword"
+                  placeholder="Confirmer mot de passe" formControlName="confirmPassword" required="required">
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="fa" [ngClass]="{
+                                'fa-eye-slash': !fieldTextType1,
+                                'fa-eye': fieldTextType1
+                              }" (click)="toggleFieldTextType1()"></i>
+                  </span>
+                </div>
+              </div>
+              <div
+                *ngIf="signupForm.controls['confirmPassword'].errors && !signupForm.controls['confirmPassword'].pristine"
+                class="text-danger small_font">
+                <p [hidden]="!signupForm.controls['confirmPassword'].errors.required">Champ requis!</p>
+                <p [hidden]="!signupForm.controls['confirmPassword'].hasError('NoPassswordMatch')">Mots de passe
+                  non
+                  semblables.</p>
+              </div>
+            </div>
+            <strong>Votre adresse (Quartier):</strong>
+
+            <div class="form-group">
+              <label>Adresse</label>
+              <input type="text" class="form-control" (keyup)="changeCoordinate($event)" placeholder="Adresse"
+                autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search formControlName="adresse">
+            </div>
+            <div *ngIf="displayAdresse" class="list-group">
+              <a href="#" class="list-group-item list-group-item-action active">
+                Choisissez l'adresse qui est plus proche de vous
+              </a>
+              <a class="list-group-item list-group-item-action" (click)="changeCoordinates(adresse.lon, adresse.lat)"
+                *ngFor="let adresse of adresseByLoc">{{adresse.display_name? adresse.display_name : ''}}</a>
+            </div>
+            <div>
+
+            </div>
+            <button class="btn btn-danger mt-3" type="submit" [disabled]="signupForm.invalid">Créer un compte</button>
+            <div>
+              * Remplissez les champs requis pour pouvoir soumettre le formulaire
+            </div>
+            <div>
+              <button mat-button matStepperPrevious>Précédent</button>
+            </div>
+
+          </mat-step>
+
+        </mat-horizontal-stepper>
+
+      </form>
+      <p class="text-danger">{{ errorMessage }}</p>
+
+      <div class="post-meta">
+        <!-- <span class="d-block"><a href="">Dave Rogers</a> in <a href="#">Food</a></span>-->
+        <span class="date-read">Vous avez déjà un compte<span class="mx-1"></span><a
+            routerLink="/auth/signin">Connectez-vous</a></span>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-12 img-fluid" style="height: 300px; width:100%;" leaflet [leafletOptions]="options"
+    [leafletLayersControl]="layersControl" (leafletMapReady)="onMapReady($event)" [leafletLayers]="layers">
+  </div>
+  <p class="text-small">Sentez-vous libre d'ajuster votre position en cliquant sur la carte</p>
+</div>
+<div class="col-10 offset-1">
+  <br /><br /><br />
+  <button class="btn get-started-btn scrollto mb-1" routerLink="/">
+    <i class="fa fa-chevron-left"></i> Retour</button>
+</div>

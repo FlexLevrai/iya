@@ -1,0 +1,68 @@
+<div class="row">
+  <div *ngIf="endForm" class="col-xl-6 col-lg-6 col-md-6 col-12">
+    <h2>Enregistrer un devis</h2>
+    <form [formGroup]="devisForm" (ngSubmit)="onSaveDevis()">
+      <div class="form-group">
+        <label for="designation">Désignation</label>
+        <input type="text" id="designation" class="form-control" formControlName="designation">
+      </div>
+      <div class="form-group">
+        <label for="quantite">Quantité</label>
+        <input type="number" id="quantite" class="form-control" formControlName="quantite">
+      </div>
+      <div class="form-group">
+        <label for="pu">Prix unitaire</label>
+        <input type="number" id="pu" class="form-control" formControlName="pu">
+      </div>
+      <button class="btn btn-success" [disabled]="devisForm.invalid" type="submit">Ajouter
+      </button>&nbsp;
+      <button *ngIf="endDevis" (click)="onEndForm()" class="get-started-btn scrollto" type="submit">Terminer
+      </button>
+
+    </form>
+    <p>Mettre la main d'oeuvre aussi comme désignation</p>
+  </div>
+  <div id="myquote" *ngIf="apDevis" class="col-xl-6 col-lg-6 col-md-6 col-12">
+    <h2>Devis</h2>
+    <button *ngIf="forPrint" class="btn btn-success btn-primary" (click)="export()">PDF</button>&nbsp;
+    <div class="table-responsive">
+      <table class="table table-striped" [svData]="devis" #sv="svDataTable" [svRowsOnPage]="30" svSortBy="name"
+        svSortOrder="asc">
+        <thead>
+          <tr>
+            <th>
+              <sv-default-sorter>#</sv-default-sorter>
+            </th>
+            <th>Désignation</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of sv.data; let i = index">
+            <td>{{ i +1}}</td>
+            <td>{{ item.designation}}</td>
+            <td>{{ item.quantite }}</td>
+            <td>{{ item.prixUnitaire}}</td>
+            <td>{{ item.prixUnitaire * item.quantite}}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>{{total}}</strong></td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+/* .form-control-m{
+  width: 180%;
+}
+@media (max-width: 416px) {
+  .form-control-m{
+    width: 105%;
+  }
+}
+@media (min-width: 417px) and (max-width: 50px)  {
+  .form-control-m{
+    width: 130%;
+  }
+} */
+agm-map {
+  height: 300px;
+}
+input >.intl-tel-input {
+  position: relative;
+  display: inline-block;
+  width: 100% !important;
+}
+#phone{
+  width:100%;
+  }
+  #map {
+    height: 100%;
+  }

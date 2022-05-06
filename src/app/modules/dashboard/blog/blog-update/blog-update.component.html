@@ -1,0 +1,50 @@
+<div class="container-fluid">
+    <h3 class="text-center mb-5">Modification produit</h3>
+    <div class="row">
+    <!-- Form -->
+    <div class="col-10 offset-1" *ngIf="!sendStatus">
+      <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="titre">Titre</label>
+          <input type="text" class="form-control" formControlName="title">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Description</label>
+            <ckeditor [editor]="Editor" formControlName="description"></ckeditor>
+            <!-- <textarea type="text" class="form-control" formControlName="description"></textarea> -->
+          </div>
+          <div class="form-group">
+            <label for="photo">Images</label>
+            <div class="custom-file">
+              <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile" (change)="detectFiles($event)"
+              >
+              <label class="custom-file-label" #labelImport for="validatedCustomFile">Choisir un fichier...</label>
+              <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div>
+          </div>
+          <div class="col-12">
+            <img *ngIf="url" src="{{url}}" class="img-fluid responsive"
+                          height="35px">
+              <p *ngIf="url" class="text-warning">Chargement en cours...</p>
+              <p class="text-danger" *ngIf="errorFile">Mauvais format /seulement les images minimum 100x100</p>
+              <p class="text-success" *ngIf="fileUploaded">Fichier chargé !</p>
+              <p class="text-success" *ngIf="addAgain">Vous pouvez ajouter une autre image !</p>
+              <p class="text-danger" *ngIf="notAdd">Vous avez atteind la limite de fichiers à ajouter !</p>
+            </div>
+            <ul class="list-group" >
+                <li class="list-group-item" *ngFor="let userimg of userImage; let i = index"><img src="{{imgUrl}}{{userimg}}" class="img-fluid responsive"
+                    width="50" height="50">&nbsp;&nbsp;<button type="submit" class="btn btn-danger btn-small" (click)="deleteImgTab(i)">X</button></li>
+            </ul>
+        <br><br>
+        <button type="submit" class="get-started-btn scrollto" [disabled]="blogForm.invalid || fileIsUploading">Modifier</button>
+      </form>
+    </div>
+    <div *ngIf="sendStatus" class="text-success col-xl-6 col-lg-6 col-md-6 col-12">
+    <p>L'article a été bien modifié.</p><br/>
+    </div>
+  </div>
+  </div>
+  <br/><br/><br/>
+  <button class="btn btn-outline-waring mb-1" (click)="onBack()">
+  <i class="fa fa-chevron-left"></i> Retour</button>
+  

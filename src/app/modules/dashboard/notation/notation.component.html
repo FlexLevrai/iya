@@ -1,0 +1,85 @@
+<div class="row">
+  <div *ngIf="endForm" class="col-xl-6 col-lg-6 col-md-6 col-12">
+    <h2>Noter le travail</h2>
+    <form [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <h3>Avez-vous été satisfait(e) de votre dernière expérience avec l'artisan?</h3>
+        <div class="form-check" style="padding-top:1%;">
+          <input class="form-check-input" type="radio" formControlName="note" id="exampleRadios1" value="1" checked>
+          <label class="form-check-label" for="exampleRadios1">
+            Très satisfait(e)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="note" id="exampleRadios2" value="2">
+          <label class="form-check-label" for="exampleRadios2">
+            Satisfait(e)
+          </label>
+        </div>
+      <div class="form-check" style="padding-top:1%;">
+        <input class="form-check-input" type="radio" formControlName="note" id="exampleRadios2" value="3">
+        <label class="form-check-label" for="exampleRadios2">
+          Ni satisfait(e) ni insatisfait(e)
+        </label>
+      </div>
+      <div class="form-check" style="padding-top:1%;">
+        <input class="form-check-input" type="radio" formControlName="note" id="exampleRadios2" value="4">
+        <label class="form-check-label" for="exampleRadios2">
+          Insatisfait(e)
+        </label>
+      </div>
+      <div class="form-check" style="padding-top:1%;">
+        <input class="form-check-input" type="radio" formControlName="note" id="exampleRadios2" value="5">
+        <label class="form-check-label" for="exampleRadios2">
+          Très insatisfait(e)
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <h3>Dans quelle mesure recommandez-vous notre société ?</h3>
+      <div class="form-check" style="padding-top:1%;">
+        <input class="form-check-input" type="radio" formControlName="note_entreprise" id="exampleRadios1" value="1" checked>
+        <label class="form-check-label" for="exampleRadios1">
+          Extrêmement fortement
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio"  formControlName="note_entreprise" id="exampleRadios2" value="2">
+        <label class="form-check-label" for="exampleRadios2">
+          Très fortement
+        </label>
+      </div>
+    <div class="form-check" style="padding-top:1%;">
+      <input class="form-check-input" type="radio"  formControlName="note_entreprise" id="exampleRadios2" value="3">
+      <label class="form-check-label" for="exampleRadios2">
+        Relativement fortement
+      </label>
+    </div>
+    <div class="form-check" style="padding-top:1%;">
+      <input class="form-check-input" type="radio"  formControlName="note_entreprise" id="exampleRadios2" value="4">
+      <label class="form-check-label" for="exampleRadios2">
+        Pas très fortement
+      </label>
+    </div>
+    <div class="form-check" style="padding-top:1%;">
+      <input class="form-check-input" type="radio"  formControlName="note_entreprise" id="exampleRadios2" value="5">
+      <label class="form-check-label" for="exampleRadios2">
+        Pas fortement du tout
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Quels changements amélioreraient le plus notre nouveau service ?</label>
+    <textarea name="text" class="form-control" formControlName="suggestion_entreprise"></textarea>
+  </div>
+      <button [disabled]="noteForm.invalid" class="btn btn-warning"
+              type="submit">Terminer
+      </button>
+
+    </form>
+  </div>
+  <div *ngIf="!endForm" class="ml-2 text-success">
+    Les informations ont été bien soumises.<br/>
+    <button class="btn btn-primary" (click)='onBack()'>Retour</button>
+ </div>
+</div>

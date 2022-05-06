@@ -1,0 +1,142 @@
+<div class="container-fluid">
+  <h3 class="text-center mb-5">Boutique</h3>
+  <div class="row">
+    <!-- Form -->
+    <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="!sendStatus">
+      <form [formGroup]="boutiqueForm" (ngSubmit)="onSubmit()">
+        <div class="form-field-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Catégories</mat-label>
+            <mat-select formControlName="category" required multiple>
+              <mat-option *ngFor="let category of categories" [value]="category.title">{{category.title}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <label for="titre">Titre</label>
+          <input type="text" class="form-control" formControlName="title">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Description</label>
+          <textarea type="text" class="form-control" formControlName="description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="prix">Prix</label>
+          <input type="number" class="form-control" formControlName="prix">
+        </div>
+        <div class="form-field-group mt-2">
+          <mat-form-field appearance="fill">
+            <mat-label>Livraison</mat-label>
+            <mat-select required formControlName="livraison">
+              <mat-option value="Oui">Oui</mat-option>
+              <mat-option value="Non">Non</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <label for="prix">Id du produit</label>
+          <input type="text" class="form-control" formControlName="productId">
+        </div>
+        <div class="form-field-group mt-2">
+          <mat-form-field appearance="fill">
+            <input type="text" placeholder="artisan" aria-label="Numero artisan" matInput [formControl]="myControl"
+              [matAutocomplete]="auto" (ngModelChange)="doSomething($event)">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <label for="photo">Photo</label>
+          <div class="custom-file">
+            <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile"
+              (change)="detectFiles($event)">
+            <label class="custom-file-label" #labelImport for="validatedCustomFile">Choisir un fichier...</label>
+            <div class="invalid-feedback">Example invalid custom file feedback</div>
+          </div>
+        </div>
+        <div class="col-12">
+          <img *ngIf="url" src="{{url}}" class="img-fluid responsive" height="35px">
+          <p *ngIf="url" class="text-warning">Chargement en cours...</p>
+          <p class="text-danger" *ngIf="errorFile">Mauvais format /seulement les images minimum 100x100</p>
+          <p class="text-success" *ngIf="fileUploaded">Fichier chargé !</p>
+          <p class="text-success" *ngIf="addAgain">Vous pouvez ajouter une autre image !</p>
+          <p class="text-danger" *ngIf="notAdd">Vous avez atteind la limite de fichiers à ajouter !</p>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let userimg of userImage; let i = index"><img src="{{imgUrl}}{{userimg}}"
+              class="img-fluid responsive" width="50" height="50">&nbsp;&nbsp;<button type="submit"
+              class="btn btn-danger btn-small" (click)="deleteImgTab(i)">X</button></li>
+        </ul>
+        <br><br>
+        <button type="submit" class="get-started-btn scrollto"
+          [disabled]="boutiqueForm.invalid || fileIsUploading">Ajouter</button>
+      </form>
+    </div>
+    <div *ngIf="sendStatus" class="text-success col-xl-6 col-lg-6 col-md-6 col-12">
+      <p>Le produit a été ajouté.</p><br />
+      <button type="submit" class="get-started-btn scrollto" (click)="addNew()">Ajouter un nouveau</button>
+    </div>
+
+    <!-- Form -->
+    <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+      <div class="mat-elevation-z8 table-responsive">
+        <table class="table table-striped" [svData]="boutiques" #sv="svDataTable" [svRowsOnPage]="10" svSortBy="name"
+          svSortOrder="asc">
+          <thead>
+            <tr>
+              <th>
+                <sv-default-sorter>Numero</sv-default-sorter>
+              </th>
+              <th>Catégorie</th>
+              <th>Titre</th>
+              <th>Description</th>
+              <th>Prix</th>
+              <th>Id du produit</th>
+              <th>Média</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of sv.data; let i = index">
+              <td>{{ i+1}}</td>
+              <td>{{item.category}}</td>
+              <td>{{(item.title)}}</td>
+              <td>{{(item.description.length>10)? (item.description | slice:0:10)+'..':(item.description)}}</td>
+              <td>{{(item.prix)}}</td>
+              <td>{{item.productId}}</td>
+              <td><button class="btn btn-outline-secondary picture" (click)="open(content, item.id)" type="button"><i
+                    class="fa fa-image"></i></button></td>
+              <td><button (click)="onUpdate(item.id)" class="btn btn-outline-warning btn-small" title="modification"><i
+                    class="fa fa-edit"></i></button><button (click)="onDelete(item.id)"
+                  class="btn btn-outline-danger btn-small">X</button></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Média</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <gallery [items]="images"></gallery>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+  </div>
+</ng-template>

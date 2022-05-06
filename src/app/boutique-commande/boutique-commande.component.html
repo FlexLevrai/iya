@@ -1,0 +1,52 @@
+<div class="col-10 offset-1 mt-5 mat-elevation-z8" *ngIf="!sendStatus">
+  <h1>Commande</h1>
+  <form [formGroup]="commandeForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-group">
+      <label for="libele">Nom et prénoms *</label>
+      <input class="form-control" formControlName="fullname" required>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-8">
+        <div class="form-group">
+          <label for="libele">Quantité *</label>
+          <input type="number" class="form-control" formControlName="nombre" required>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <div class="form-group">
+          <label for="telephone">Numéro de téléphone *</label><br />
+          <input type="text" style="width: 100% !important" class="form-control" ng2TelInput
+            [ng2TelInputOptions]="{initialCountry: 'tg'}" formControlName="telephone" (hasError)="hasError($event)"
+            (ng2TelOutput)="getNumber($event)" (intlTelInputObject)="telInputObject($event)"
+            (countryChange)="onCountryChange($event)">
+          <div *ngIf="phoneError" class="text-danger">
+            <p>Le numero est invalide.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="libele">Adresse</label>
+      <textarea class="form-control" formControlName="adresse"></textarea>
+    </div>
+    <!-- <div class="form-group">
+        <label for="libele">Numéro</label>
+        <input name="numero" type="tel" placeholder="+228XXX ou 00228" class="form-control" ngModel #numero="ngModel" required>
+    </div> -->
+
+    <button class="btn btn-info" type="submit" [disabled]="commandeForm.invalid" type="submit">Enregister</button>
+  </form>
+  <br /><br />
+  <div class="col-12 img-fluid" style="height: 300px; width:100%;" leaflet [leafletOptions]="options"
+    [leafletLayersControl]="layersControl" (leafletMapReady)="onMapReady($event)" [leafletLayers]="layers">
+  </div>
+  <p class="text-small">Sentez-vous libre d'ajuster votre position de livraison en cliquant sur la carte</p>
+</div>
+
+<div *ngIf="sendStatus" class="text-success col-10 offset-1 mt-5">
+  <p>Votre commande a été bien prise en compte.
+    {{this.product.livraison == "oui"? " Vous serez bientôt livrés." :"Nous vous recontacterons sous peu."}}</p>
+  <br />
+  <button type="submit" class="btn btn-primary" (click)="onBack()">Retour à la boutique</button><br>
+  <button type="submit" class="btn btn-primary" (click)="onAccueil()">Retour à l'accueil</button>
+</div>

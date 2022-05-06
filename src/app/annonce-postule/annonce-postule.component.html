@@ -1,0 +1,23 @@
+
+<div class="col-8 offset-2 mt-5 mat-elevation-z8" *ngIf="!sendStatus">
+    <h1 class="mt-5" >Postuler</h1>
+    <form  [formGroup]="postuleForm" (ngSubmit)="onSubmit()" novalidate>
+
+    <div class="form-group">
+        <label for="libele">Motivation</label>
+        <textarea  class="form-control" Placeholder="Je suis intéressé(e)" formControlName="motivation"></textarea>
+    </div>
+    <!-- <div class="form-group">
+        <label for="libele">Numéro</label>
+        <input name="numero" type="tel" placeholder="+228XXX ou 00228" class="form-control" ngModel #numero="ngModel" required>
+    </div> -->
+    
+    <button class="btn btn-info"  type="submit"  [disabled]="postuleForm.invalid" type="submit">Enregister</button>
+  </form>
+    <br/><br/>
+  </div>
+
+  <div *ngIf="sendStatus" class="text-success col-10 offset-1 mt-5">
+    <p>Votre demande a été envoyée. </p><br/>
+      <button type="submit" class="btn btn-primary" (click)="onBack()">Retour à l'annonce</button>
+    </div>

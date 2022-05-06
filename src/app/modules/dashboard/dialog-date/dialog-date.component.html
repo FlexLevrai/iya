@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Action</h1>
+<div mat-dialog-content>
+  <p>{{data.disponibilite}}</p>
+  <mat-form-field>
+    <mat-label>{{data.name}}</mat-label>
+    <input matInput type="date"
+ [(ngModel)]="data.contenu">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Annuler</button>
+  <button mat-button [mat-dialog-close]="data.contenu" cdkFocusInitial>Ok</button>
+</div>
